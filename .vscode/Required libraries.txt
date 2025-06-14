@@ -1,0 +1,36 @@
+//Run this command in your virtual environment or terminal:
+
+(pip install flask flask_sqlalchemy bcrypt werkzeug Flask-Mail google-auth requests)
+
+//Explanation of Required Packages:
+
+ 1.Flask – Web framework for building web applications.
+
+ 2.Flask-SQLAlchemy – Adds support for databases using SQLAlchemy in Flask.
+
+ 3.Werkzeug – Provides utilities for secure file uploads (secure_filename).
+
+ 4.bcrypt – Used for hashing passwords.
+
+ 5.datetime (built-in) – No installation required.
+
+ 6.os (built-in) – No installation required.
+
+
+//Run this command in the terminal for creating a virtual environment :
+
+(python -m venv venv)
+
+
+
+//Run this command in the terminal for activating the virtual environment :
+
+(venv\Scripts\activate)
+
+
+
+//Run this command in the terminal for Running the Python Code :
+
+(python app.py)
+
+370106510299-qb4ki4gnfqrq67eu4gogo6tuujrbr602.apps.googleusercontent.com

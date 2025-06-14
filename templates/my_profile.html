@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <!-- custom css -->
+    <link rel = "stylesheet" href = "../static/css/my_profile.css">
+</head>
+<body>
+    <div class="container">
+        <h1>My Profile</h1>
+
+        <!-- Personal Details Section -->
+        <div class="section">
+            <div class="profile-header">
+               <!-- Replace the profile photo section with this corrected version -->
+                {% if user_data.personal and user_data.personal.photo %}
+                {% set photo_path = user_data.personal.photo.replace('\\', '/').split('�')[0] %}
+                <img src="{{ url_for('static', filename=photo_path) }}" alt="Profile Photo" class="profile-photo">
+                {% else %}
+                <div class="profile-photo" style="background-color: #3498db; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                    {{ user_data.user.name[0].upper() }}
+                </div>
+                {% endif %}
+                                
+                <div class="profile-info">
+                    <h2>{{ user_data.user.name }}</h2>
+                    {% if user_data.personal %}
+                        <p>Email: {{ user_data.personal.email or user_data.user.email }}</p>
+                        {% if user_data.personal.phone %}
+                            <p>Phone: {{ user_data.personal.phone }}</p>
+                        {% endif %}
+                        {% if user_data.personal.address %}
+                            <p>Address: {{ user_data.personal.address }}</p>
+                        {% endif %}
+                    {% else %}
+                        <p>Email: {{ user_data.user.email }}</p>
+                        <p><em>No additional personal details provided</em></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Objective Section -->
+        {% if user_data.objective %}
+        <div class="section">
+            <h2>Career Objective</h2>
+            <p>{{ user_data.objective.objective_text }}</p>
+        </div>
+        {% endif %}
+        
+        <!-- Education Section -->
+        {% if user_data.education %}
+        <div class="section">
+            <h2>Education</h2>
+            {% for edu in user_data.education %}
+            <div class="item">
+                <h3>{{ edu.course }}</h3>
+                <p><strong>Institution:</strong> {{ edu.school }}</p>
+                <p><strong>Grade:</strong> {{ edu.grade }}</p>
+                <p><strong>Year:</strong> {{ edu.year }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Experience Section -->
+        {% if user_data.experience %}
+        <div class="section">
+            <h2>Work Experience</h2>
+            {% for exp in user_data.experience %}
+            <div class="item">
+                <h3>{{ exp.job_title }}</h3>
+                <p><strong>Company:</strong> {{ exp.company }}</p>
+                <p><strong>Duration:</strong> {{ exp.start_date }} - {{ exp.end_date }}</p>
+                <p>{{ exp.details }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Skills Section -->
+        {% if user_data.skills %}
+        <div class="section">
+            <h2>Skills</h2>
+            {% for skill in user_data.skills %}
+            <div class="item">
+                <h3>{{ skill.skill_name }}</h3>
+                <div class="skill-bar">
+                    <div class="skill-level" style="width: {{ skill.skill_level * 20 }}%;"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Projects Section -->
+        {% if user_data.projects %}
+        <div class="section">
+            <h2>Projects</h2>
+            {% for project in user_data.projects %}
+            <div class="item">
+                <h3>{{ project.project_title }}</h3>
+                <p>{{ project.project_description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- References Section -->
+        {% if user_data.references %}
+        <div class="section">
+            <h2>References</h2>
+            {% for ref in user_data.references %}
+            <div class="item">
+                <h3>{{ ref.referee_name }}</h3>
+                <p><strong>Position:</strong> {{ ref.referee_job }}</p>
+                <p><strong>Company:</strong> {{ ref.referee_company }}</p>
+                <p><strong>Email:</strong> {{ ref.referee_email }}</p>
+                <p><strong>Phone:</strong> {{ ref.referee_phone }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <a href="/dashboard" class="btn">Back to Dashboard</a>
+        <a href="/info_gathering" class="btn">Edit Profile</a>
+    </div>
+</body>
+</html>

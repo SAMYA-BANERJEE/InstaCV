@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Template 7 - Orange Accents</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .resume-container {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            padding: 30px;
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .header-left {
+            flex-grow: 1;
+        }
+        .header-right {
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #333;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .contact-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+        .content-box {
+            padding-left: 55px;
+        }
+        .education-item, .project-item {
+            margin-bottom: 15px;
+        }
+        .education-item h3, .project-item h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .education-date {
+            color: #ff5722;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+        .skill-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .skill-list li {
+            margin-bottom: 8px;
+        }
+        .language-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .language-list li {
+            margin-bottom: 8px;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .btn-download, .btn-preview {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-download:hover, .btn-preview:hover {
+            background-color: #e64a19;
+        }
+        
+        /* Page break controls for PDF generation */
+        .avoid-page-break {
+            page-break-inside: avoid !important;
+        }
+        .page-break-before {
+            page-break-before: always !important;
+        }
+        .page-break-after {
+            page-break-after: always !important;
+        }
+        
+        /* PDF-specific styles */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+                margin: 0;
+                border: none;
+                width: 210mm;
+                min-height: 297mm;
+                padding: 20px;
+            }
+            .btn-container {
+                display: none;
+            }
+            
+            /* Ensure proper page breaks in print mode */
+            .header {
+                page-break-after: avoid;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column-reverse;
+            }
+            .header-right {
+                margin-left: 0;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .profile-img {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn-container">
+            <button class="btn-preview" onclick="previewResume()">Preview Resume</button>
+            <button class="btn-download" onclick="downloadPDF()">Download as PDF</button>
+        </div>
+        
+        <div class="resume-container" id="resume">
+            <div class="header avoid-page-break">
+                <div class="header-left">
+                    <h1>{{ user_data.personal.name if user_data.personal else user_data.user.name }}</h1>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">@</div>
+                            {{ user_data.personal.email if user_data.personal else user_data.user.email }}
+                        </div>
+                        {% if user_data.personal and user_data.personal.phone %}
+                        <div class="contact-item">
+                            <div class="contact-icon">📱</div>
+                            {{ user_data.personal.phone }}
+                        </div>
+                        {% endif %}
+                        {% if user_data.personal and user_data.personal.address %}
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            {{ user_data.personal.address }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    {% if user_data.personal and user_data.personal.photo %}
+                    {% set photo_path = user_data.personal.photo.replace('\\', '/').split('�')[0] %}
+                    <img src="{{ url_for('static', filename=photo_path) }}" alt="Profile Photo" class="profile-img">
+                    {% else %}
+                    <div class="profile-img" style="background-color: #ff5722; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        {{ user_data.user.name[0].upper() }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+                <div class="section-header">
+                    <div class="section-icon">🎯</div>
+                    <h2 class="section-title">Objective</h2>
+                </div>
+                <div class="content-box">
+                    <p>{{ user_data.objective.objective_text if user_data.objective else "Aspiring professional seeking opportunities to apply skills and knowledge." }}</p>
+                </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+                <div class="section-header">
+                    <div class="section-icon">🎓</div>
+                    <h2 class="section-title">Education</h2>
+                </div>
+                <div class="content-box">
+                    {% if user_data.education %}
+                        {% for edu in user_data.education %}
+                        <div class="education-item avoid-page-break">
+                            <h3>{{ edu.course }}</h3>
+                            <div class="education-date">{{ edu.year }}</div>
+                            <p><strong>{{ edu.school }}</strong></p>
+                            <p>{{ edu.grade }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="education-item avoid-page-break">
+                        <h3>Bachelor of Computer Applications</h3>
+                        <div class="education-date">2022 - 2025</div>
+                        <p><strong>Maulana Abul Kalam Azad University of Technology, West Bengal</strong></p>
+                        <p>8.33</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+                <div class="section-header">
+                    <div class="section-icon">🚀</div>
+                    <h2 class="section-title">Projects</h2>
+                </div>
+                <div class="content-box">
+                    {% if user_data.projects %}
+                        {% for project in user_data.projects %}
+                        <div class="project-item avoid-page-break">
+                            <h3>{{ project.project_title }}</h3>
+                            <p>{{ project.project_description }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="project-item avoid-page-break">
+                        <h3>Resume Maker</h3>
+                        <p>A web-based application that allows users to create professional resumes using pre-built templates. Built with HTML, CSS, JavaScript and Python Flask API for backend.</p>
+                    </div>
+                    <div class="project-item avoid-page-break">
+                        <h3>Internet Speed Test App</h3>
+                        <p>A Python Tkinter-based application that measures internet speed using the Speedtest API, displaying download and upload speeds in a user-friendly interface.</p>
+                    </div>
+                    <div class="project-item avoid-page-break">
+                        <h3>Digital Whiteboard App</h3>
+                        <p>A Python Tkinter-based whiteboard application that allows users to draw, erase, and save their work as an image. Includes color palette, pen size adjustment, and an eraser tool.</p>
+                    </div>
+                    <div class="project-item avoid-page-break">
+                        <h3>Notepad App</h3>
+                        <p>A Notepad-like text editor built with Python Tkinter, featuring basic file operations like open, save, and edit.</p>
+                    </div>
+                    <div class="project-item avoid-page-break">
+                        <h3>Google Translator App</h3>
+                        <p>A simple Python Tkinter application that translates text between multiple languages using the Google Translate API.</p>
+                    </div>
+                    <div class="project-item avoid-page-break">
+                        <h3>To-Do List App</h3>
+                        <p>A task management application built with Python Tkinter, allowing users to add, edit, and delete tasks with a simple GUI.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+                <div class="section-header">
+                    <div class="section-icon">💻</div>
+                    <h2 class="section-title">Skills</h2>
+                </div>
+                <div class="content-box">
+                    <ul class="skill-list">
+                        {% if user_data.skills %}
+                            {% for skill in user_data.skills %}
+                            <li>{{ skill.skill_name }}</li>
+                            {% endfor %}
+                        {% else %}
+                        <li>HTML</li>
+                        <li>PYTHON</li>
+                        <li>CSS</li>
+                        <li>MySQL</li>
+                        <li>FLASK (Python API)</li>
+                        <li>TKINTER (Python GUI)</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+                <div class="section-header">
+                    <div class="section-icon">🌐</div>
+                    <h2 class="section-title">Languages</h2>
+                </div>
+                <div class="content-box">
+                    <ul class="language-list">
+                        <li>English</li>
+                        <li>Hindi</li>
+                        <li>Bengali</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            // Hide buttons before generating PDF
+            const btnContainer = document.querySelector('.btn-container');
+            btnContainer.style.display = 'none';
+            
+            const element = document.getElementById('resume');
+            const opt = {
+                margin: 0,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    letterRendering: true,
+                    x: 0,
+                    y: 0,
+                    width: 210 * 3.78, // Convert mm to px (approximate)
+                    windowWidth: 210 * 3.78 // Match the width
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true,
+                    hotfixes: ['px_scaling']
+                },
+                pagebreak: {
+                    mode: ['avoid-all', 'css', 'legacy'],
+                    before: '.page-break-before',
+                    after: '.page-break-after',
+                    avoid: '.avoid-page-break'
+                }
+            };
+            
+            // Generate PDF
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .save()
+                .then(function() {
+                    // Show buttons again after PDF is generated
+                    btnContainer.style.display = 'block';
+                });
+        }
+        
+        function previewResume() {
+            // Open a new window with just the resume content
+            const resumeContent = document.getElementById('resume').outerHTML;
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Resume Preview</title>
+                    <style>
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f5f5f5;
+                            display: flex;
+                            justify-content: center;
+                            align-items: flex-start;
+                            min-height: 100vh;
+                            padding-top: 20px;
+                        }
+                        ${document.querySelector('style').innerHTML}
+                        
+                        /* Additional styles for preview window */
+                        .container {
+                            max-width: 210mm;
+                            margin: 0 auto;
+                            padding: 0;
+                        }
+                        .resume-container {
+                            margin: 0 auto;
+                            width: 210mm;
+                        }
+                        .btn-container {
+                            display: none;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        ${resumeContent}
+                    </div>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+    </script>
+</body>
+</html>

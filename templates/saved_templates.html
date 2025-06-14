@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Templates</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/saved_templates.css">
+</head>
+<body>
+  <div class="header">
+      <div class="container">
+          <h1>Saved Templates</h1>
+          <p>Your collection of saved resume templates</p>
+      </div>
+  </div>
+  
+  <div class="container">
+      <div class="mb-4">
+          <a href="{{ url_for('templates_page') }}" class="back-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+              </svg>
+              Back to Templates
+          </a>
+      </div>
+      
+      <!-- Templates container - will be populated by JavaScript -->
+      <div class="row" id="savedTemplatesContainer">
+          <!-- Empty state will be shown if no templates are saved -->
+          <div class="col-12 empty-state" id="emptyState" style="display: none;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              <h2>No saved templates yet</h2>
+              <p>You haven't saved any templates yet. Browse our collection and click the heart icon to save templates you like.</p>
+              <a href="{{ url_for('templates_page') }}" class="browse-btn">Browse Templates</a>
+          </div>
+      </div>
+  </div>
+  
+  <!-- Preview Modal -->
+  <div id="previewModal" class="modal">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+          <iframe id="previewFrame" class="modal-iframe" src="/placeholder.svg"></iframe>
+      </div>
+  </div>
+  
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+  
+  <!-- javascript file -->
+   <script>
+       // Updated template data with unique descriptions for templates_pages.html and saved_templates.html
+    const templateData = {
+    'template_01': {
+        title: 'Professional Dark',
+        description: 'A sophisticated template with a dark header bar, clean section organization, and professional typography ideal for corporate positions.',
+        image: "{{ url_for('static', filename='images/template_01_preview.jpg') }}"
+    },
+    'template_02': {
+        title: 'Modern Sidebar',
+        description: 'A contemporary design featuring a colored sidebar with timeline elements, perfect for showcasing career progression.',
+        image: "{{ url_for('static', filename='images/template_02_preview.jpg') }}"
+    },
+    'template_03': {
+        title: 'Blue Header',
+        description: 'A streamlined template with distinctive blue section headers and organized bullet points for clear information presentation.',
+        image: "{{ url_for('static', filename='images/template_03_preview.jpg') }}"
+    },
+    'template_04': {
+        title: 'Two Column',
+        description: 'A professional layout with a dark sidebar and skill measurement bars that efficiently utilizes space to highlight your expertise.',
+        image: "{{ url_for('static', filename='images/template_04_preview.jpg') }}"
+    },
+    'template_05': {
+        title: 'Blue Gradient',
+        description: 'A polished template with subtle blue gradient section headers and visual skill indicators for a modern professional look.',
+        image: "{{ url_for('static', filename='images/template_05_preview.jpg') }}"
+    },
+    'template_06': {
+        title: 'Hexagon Pattern',
+        description: 'A distinctive design featuring a hexagonal profile photo and subtle geometric background pattern that adds visual interest.',
+        image: "{{ url_for('static', filename='images/template_06_preview.jpg') }}"
+    },
+    'template_07': {
+        title: 'Orange Accents',
+        description: 'A clean template with vibrant orange accent icons that draw attention to each section while maintaining a professional appearance.',
+        image: "{{ url_for('static', filename='images/template_07_preview.jpg') }}"
+    },
+    'template_08': {
+        title: 'Minimalist Gray',
+        description: 'A refined template with subtle checkmark section headers and a clean layout focusing on content clarity and readability.',
+        image: "{{ url_for('static', filename='images/template_08_preview.jpg') }}"
+    },
+    'template_09': {
+        title: 'Clean Borders',
+        description: 'A well-structured design with elegant bordered sections and centered headers creating clear visual separation between content areas.',
+        image: "{{ url_for('static', filename='images/template_09_preview.jpg') }}"
+    },
+    'template_10': {
+        title: 'Simple Underline',
+        description: 'A timeless template with underlined section headers and serif typography lending a classic, scholarly appearance.',
+        image: "{{ url_for('static', filename='images/template_10_preview.jpg') }}"
+    },
+    'template_11': {
+        title: 'Minimal Dots',
+        description: 'A contemporary design with dot-prefixed section labels and a tag-based skills display for a modern digital aesthetic.',
+        image: "{{ url_for('static', filename='images/template_11_preview.jpg') }}"
+    },
+    'template_12': {
+        title: 'Simple Gray',
+        description: 'A clean-cut template with subtle gray section headers and left-bordered content areas providing elegant structure.',
+        image: "{{ url_for('static', filename='images/template_12_preview.jpg') }}"
+    },
+    'template_13': {
+        title: 'Simple Minimal',
+        description: 'An uncluttered design with balanced spacing and straightforward information presentation for maximum readability.',
+        image: "{{ url_for('static', filename='images/template_13_preview.jpg') }}"
+    },
+
+    'template_18': {
+        title: 'Modern Accent',
+        description: 'A fresh template with strategic blue accent elements and contemporary layout balancing creativity and professionalism.',
+        image: "{{ url_for('static', filename='images/template_18_preview.jpg') }}"
+    },
+    'template_19': {
+        title: 'Elegant Sidebar',
+        description: 'A sophisticated design with a contrasting dark sidebar and structured content areas creating visual interest and organization.',
+        image: "{{ url_for('static', filename='images/template_19_preview.jpg') }}"
+    },
+    'template_20': {
+        title: 'Modern Two-Column',
+        description: 'A contemporary two-column format with blue accent elements and clean typography optimizing space while maintaining readability.',
+        image: "{{ url_for('static', filename='images/template_20_preview.jpg') }}"
+    },
+    'template_21': {
+        title: 'Professional Bordered',
+        description: 'A refined template with tasteful decorative borders and carefully centered content creating a distinguished, formal appearance.',
+        image: "{{ url_for('static', filename='images/template_21_preview.jpg') }}"
+    },
+    'template_22': {
+        title: 'Creative Modern',
+        description: 'A dynamic template with purple accent elements and modern layout that helps creative professionals stand out while remaining professional.',
+        image: "{{ url_for('static', filename='images/template_22_preview.jpg') }}"
+    },
+    'template_23': {
+        title: 'Gradient Modern',
+        description: 'An eye-catching design with smooth purple-blue gradient elements creating depth and visual interest for forward-thinking professionals.',
+        image: "{{ url_for('static', filename='images/template_23_preview.jpg') }}"
+    },
+    'template_24': {
+        title: 'Minimalist Elegant',
+        description: 'A graceful template with subtle decorative corners and centered typography that conveys sophistication through simplicity.',
+        image: "{{ url_for('static', filename='images/template_24_preview.jpg') }}"
+    },
+    'template_25': {
+        title: 'Modern Dark',
+        description: 'A bold design with dark backgrounds and blue accent elements creating high visual impact while maintaining professional credibility.',
+        image: "{{ url_for('static', filename='images/template_25_preview.jpg') }}"
+    },
+    'template_26': {
+        title: 'Creative Geometric',
+        description: 'An innovative template with geometric design elements and coral accents ideal for creative fields and design professionals.',
+        image: "{{ url_for('static', filename='images/template_26_preview.jpg') }}"
+    },
+    'template_27': {
+        title: 'Professional Teal',
+        description: 'A polished template with teal color accents and grid-based organization offering a fresh take on traditional resume styling.',
+        image: "{{ url_for('static', filename='images/template_27_preview.jpg') }}"
+    }
+  };
+    
+    // Function to handle template preview
+    function previewTemplate(templateId) {
+        const modal = document.getElementById('previewModal');
+        const iframe = document.getElementById('previewFrame');
+        
+        // Set the iframe source to the template preview URL
+        iframe.src = `/preview_template/${templateId}`;
+        
+        // Show the modal
+        modal.style.display = 'block';
+        
+        // Disable scrolling on the body
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModal() {
+        const modal = document.getElementById('previewModal');
+        const iframe = document.getElementById('previewFrame');
+        
+        // Hide the modal
+        modal.style.display = 'none';
+        
+        // Clear the iframe source
+        iframe.src = '';
+        
+        // Enable scrolling on the body
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Close the modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('previewModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+    
+    // Function to show toast notification
+    function showToast(message) {
+        const toastContainer = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+    
+    // Function to remove a template from saved templates
+    function removeTemplate(templateId) {
+        // Send request to server to remove template
+        fetch(`/remove_template/${templateId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showToast('Template removed from saved templates');
+                // Refresh the display
+                displaySavedTemplates();
+            } else {
+                showToast('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('An error occurred. Please try again.');
+        });
+    }
+    
+    // Function to display saved templates
+    function displaySavedTemplates() {
+        const container = document.getElementById('savedTemplatesContainer');
+        const emptyState = document.getElementById('emptyState');
+        
+        // Get saved templates from server
+        fetch('/get_saved_templates')
+            .then(response => response.json())
+            .then(data => {
+                // Clear the container
+                container.innerHTML = '';
+                
+                const savedTemplates = data.saved_templates || [];
+                
+                // Show empty state if no templates are saved
+                if (savedTemplates.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+                
+                // Hide empty state
+                emptyState.style.display = 'none';
+                
+                // Create template cards for each saved template
+                savedTemplates.forEach(templateId => {
+                    const template = templateData[templateId];
+                    if (!template) return; // Skip if template data not found
+                    
+                    const templateCard = document.createElement('div');
+                    templateCard.className = 'col-md-6 col-lg-4';
+                    templateCard.innerHTML = `
+                        <div class="template-card">
+                            <div class="position-relative">
+                                <img src="${template.image}" alt="${template.title}" class="template-img">
+                                <button class="save-btn" onclick="removeTemplate('${templateId}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="template-body">
+                                <div class="template-title">${template.title}</div>
+                                <div class="template-description">${template.description}</div>
+                                <button class="btn-preview" onclick="previewTemplate('${templateId}')">Preview</button>
+                                <a href="/select_template/${templateId}" class="btn-select">Select</a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(templateCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Error loading saved templates');
+            });
+    }
+    
+    // Initialize the page when it loads
+    document.addEventListener('DOMContentLoaded', displaySavedTemplates);
+    
+    // If the server passed template IDs directly, we can use them
+    {% if saved_template_ids %}
+        // This is a fallback in case the fetch fails
+        const serverSavedTemplates = {{ saved_template_ids|tojson }};
+    {% endif %}
+   </script>
+</body>
+</html>

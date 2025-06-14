@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Feedback Form</title>
+    <link rel="stylesheet" href="../static/css/feedback.css">
+</head>
+<body>
+    <!-- Background animated shapes -->
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Flash messages container -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="feedback-header">
+            <h1>We Value Your Feedback</h1>
+            <p>Please take a moment to let us know about your experience</p>
+        </div>
+
+        <form class="feedback-form" id="feedbackForm" action="/feedback" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Your name">
+                <div class="error-message">Please enter your name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Your email address">
+                <div class="error-message">Please enter a valid email address</div>
+            </div>
+
+            <div class="form-group">
+                <label>How would you rate your experience?</label>
+                <div class="rating-group">
+                    <div class="rating-option">
+                        <input type="radio" name="rating" id="rating1" value="1">
+                        <label for="rating1">1</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" name="rating" id="rating2" value="2">
+                        <label for="rating2">2</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" name="rating" id="rating3" value="3">
+                        <label for="rating3">3</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" name="rating" id="rating4" value="4">
+                        <label for="rating4">4</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" name="rating" id="rating5" value="5" checked>
+                        <label for="rating5">5</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" placeholder="What is this feedback about?">
+                <div class="error-message">Please enter a subject</div>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Your Feedback</label>
+                <textarea id="message" name="message" class="form-control" placeholder="Please share your thoughts, suggestions, or concerns..."></textarea>
+                <div class="error-message">Please enter your feedback</div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Feedback</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            <h3>Thank you for your feedback!</h3>
+            <p>We appreciate you taking the time to share your thoughts with us.</p>
+        </div>
+    </div>   
+    <script src="../static/js/feedback.js"></script>
+</body>
+</html>

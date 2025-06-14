@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build CV</title>
+    <!-- fontawesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- google fonts - inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- Boxicons CDN Link -->
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <!-- Google Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />    
+    <!-- custom css -->
+    <link rel = "stylesheet" href = "../static/css/main.css">
+    <link rel = "stylesheet" href = "../static/css/dashboard_custom.css">
+    <link rel="stylesheet" href="../static/css/responsive_side_bar.css">
+    
+</head>
+<body>    
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class="bx bxs-file icon"></i>
+            <div class="logo_name"><span class="text-dark">insta</span> CV</div>
+            <i class="bx bx-menu" id="btn"></i>
+          </div>
+        <ul class="nav-list">
+          <li>
+            <a href="/dashboard">
+              <i class="bx bx-grid-alt"></i>
+              <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+          </li>
+          <!-- Admin Panel Option - Only visible to admin users -->
+          {% if email in ['agnivaraha@gmail.com', 'instacvwebmail@gmail.com'] %}
+          <li id="admin-menu-item">
+            <a href="/admin">
+              <i class="bx bx-shield-quarter"></i>
+              <span class="links_name">Admin Panel</span>
+            </a>
+            <span class="tooltip">Admin Panel</span>
+          </li>
+          {% endif %}
+          <li>
+            <a href="/my-profile">
+              <i class="bx bx-user"></i>
+              <span class="links_name">My Profile</span>
+            </a>
+            <span class="tooltip">My Profile</span>
+          </li>
+          <li>
+            <a href="/info_gathering">
+              <i class="bx bx-file-blank"></i>
+              <span class="links_name">CV Builder</span>
+            </a>
+            <span class="tooltip">CV Builder</span>
+          </li>
+          <li>
+            <a href='/templates_pages'>
+              <i class="bx bx-book-content"></i>
+              <span class="links_name">Templates</span>
+            </a>
+            <span class="tooltip">Templates</span>
+          </li>
+          <li>
+            <a href="/saved_templates">
+              <i class="bx bx-heart"></i>
+              <span class="links_name">Saved</span>
+            </a>
+            <span class="tooltip">Saved</span>
+          </li>
+
+          <li>
+            <a href="/privacy-policy">
+                <i class='bx bx-show'></i>
+              <span class="links_name">Privacy Policy</span>
+            </a>
+            <span class="tooltip">Privacy Policy</span>
+          </li>
+          <li>
+            <a href="/terms-of-use">
+              <i class='bx bx-receipt' ></i>
+              <span class="links_name">Use of Terms</span>
+            </a>
+            <span class="tooltip">Use of Terms</span>
+          </li>
+          <li>
+            <a href="/feedback">
+                <i class='bx bxs-contact' ></i>
+              <span class="links_name">Get in Touch</span>
+            </a>
+            <span class="tooltip">Get in Touch</span>
+          </li>
+          <li class="profile">
+            <div class="profile-details">
+              {% if user_data.photo %}
+              {% set photo_path = user_data.photo.replace('\\', '/').split('�')[0] %}
+              <img src="{{ url_for('static', filename=photo_path) }}" 
+                alt="Profile Photo" 
+                class="profile-photo"
+                onerror="this.onerror=null; this.src='../static/images/user.png';">
+              {% else %}
+              <img src="../static/images/user.png" 
+                alt="Default Profile Photo" 
+                class="profile-photo">
+              {% endif %}
+              <div class="name_job">
+                <div class="name">{{name}}</div>
+                <div class="email">{{email}}</div>
+              </div>
+            </div>
+            <a href="/">
+            <i class="bx bx-log-out" id="log_out"></i>
+            </a>
+          </li>
+        </ul>
+    </div>    
+
+    <div class="home-section">
+        <header class = "header">
+            <div class="header-banner modern-header">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-lg-6 header-content">
+                            <h1 class="text-blue fw-bold display-4 mb-4">Top 20+ Resume Templates to Boost Your Job Search</h1>
+                        </div>
+                        <div class="col-lg-6 header-image">
+                            <img src="../static/images/resume_header_dashboard.png" alt="Resume templates" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="header-shapes">
+                    <div class="shape-dots-1"></div>
+                    <div class="shape-dots-2"></div>
+                    <div class="shape-square-1"></div>
+                    <div class="shape-square-2"></div>
+                    <div class="shape-star"></div>
+                </div>
+            </div>
+            <div class="button-container">
+                <a href='/info_gathering'><button class="btn btn-primary">Get Started</button></a>
+                <a href='/templates_pages'><button class="btn btn-primary">Choose Templates</button></a>
+                <a href='/my-profile'><button class="btn btn-outline">My Profile</button></a>
+            </div>       
+        </header>
+
+        <main>
+            <section class = "templates py-8 bg-secondary">
+                <div class = "container">
+                        <!-- Section 1: Why Use Our Online Resume Builder -->
+                        <div class="resume-builder-container">
+                            <h1 class="resume-builder-title">Why Use Our Online Resume Builder</h1>
+                        
+                            <div class="resume-section">
+                            <div class="resume-section-content">
+                                <h2 class="resume-section-heading">New, professional designs</h2>
+                                <p class="resume-section-text">
+                                Choose from a wide range of styles for every job level 
+                                and type. From fun and creative to simple and modern, 
+                                there's a perfect design for everyone.
+                                </p>
+                            </div>
+                            <div class="resume-section-image">
+                                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/section%201%20image-7FG1JdgtZGao3eER5M4Ttx5xXb6mzX.png" alt="Professional resume templates" />
+                            </div>
+                            </div>
+    
+                        <!-- Section 2: Unlimited Resumes -->
+                        <div class="resume-section resume-section-reverse">
+                        <div class="resume-section-content">
+                            <h2 class="resume-section-heading">Unlimited resumes</h2>
+                            <p class="resume-section-text">
+                            Make and edit unlimited resumes, experiment with 
+                            multiple templates and download your resumes in various 
+                            file formats.
+                            </p>
+                        </div>
+                        <div class="resume-section-image">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/section%202%20image-egDfJMhZzlHuTBQwq45R0tvCbRHOVH.png" alt="Resume template with download cursor" />
+                        </div>
+                        </div>
+                    </div>        
+                    <div class="resume-status">
+                        <div class="status-title">Your Resume Progress</div>
+                        <div class="status-item">
+                            <span class="status-label">Personal Information</span>
+                            <span class="status-value" id="personal-status">Not Started</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Education</span>
+                            <span class="status-value" id="education-status">Not Started</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Skills</span>
+                            <span class="status-value" id="skills-status">Not Started</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Projects</span>
+                            <span class="status-value" id="projects-status">Not Started</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Template Selected</span>
+                            <span class="status-value" id="template-status">Not Selected</span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href='/templates_pages' class="btn btn-lg btn-primary">View All Templates</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class = "pt-5">
+            <div class = "container my-4">
+                <div class = "row gy-5 gx-md-5 text-center text-md-start">
+                    <div class = "col-md-6 col-xl-4">
+                        <a class = "site-logo text-decoration-none fw-bold fs-2" href = "/">
+                            <span>
+                                <i class = "fa-solid fa-file-invoice"></i>
+                            </span>
+                            <span class = "site-logo-text">insta</span> CV
+                        </a>
+                        <p class = "text-grey fs-18 mt-4">Insta CV makes it easy to create a standout CV in just 4 minutes - perfect for busy professionals like you!</p>
+                    </div>
+
+                    <div class = "col-md-6 col-xl-2">
+                        <h3 class = "text-blue">Insta CV</h3>
+                        <ul class = "list-unstyled mt-4">
+                            <li class = "my-2">
+                                <a href = "/" class = "text-decoration-nonSe fs-17 text-dark">Home </a>
+                            </li>
+                            <li class = "my-2">
+                                <a href = "/info_gathering" class = "text-decoration-none fs-17 text-dark">CV Builder</a>
+                            </li>
+                            <li class = "my-2">
+                                <a href = '/templates_pages' class = "text-decoration-none fs-17 text-dark">CV Templates</a>
+                            </li>
+                            <li class = "my-2">
+                                <a href = "/login" class = "text-decoration-none fs-17 text-dark">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class = "col-md-6 col-xl-2">
+                        <h3 class = "text-blue">Legal</h3>
+                        <ul class = "list-unstyled mt-4">
+                            <li class = "my-2">
+                                <a href = "/privacy-policy" class = "text-decoration-none fs-17 text-dark">Privacy Policy</a>
+                            </li>
+                            <li class = "my-2">
+                                <a href = "/terms-of-use" class = "text-decoration-none fs-17 text-dark">Use of Terms</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class = "col-md-6 col-xl-4">
+                        <h3 class = "text-blue">Help Center</h3>
+                        <ul class = "list-unstyled mt-4">
+                          <li class = "my-2">
+                            <p class = "fs-17 mt-3">Contact: <a href = "mailto:instacvwebmail@gmail.com" class="text-decoration-none text-blue">instacvwebmail@gmail.com</a></p>
+                          </li>
+                          <li class = "my-2">
+                            <a href = "/feedback" class = "text-decoration-none fs-17 text-dark">Get In Touch</a>
+                          </li>  
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "container-fluid copyright-text pt-4 pb-3">
+                <p class = "text-center fw-3">&copy; 2025 instaCV. All rights reserved</p>
+            </div>
+        </footer>
+
+        <!-- Chatbot HTML Structure -->
+    <button id="chatbot-toggler">
+        <span class="material-symbols-rounded">mode_comment</span>
+        <span class="material-symbols-rounded">close</span>
+    </button>
+    <div class="chatbot-popup">
+        <!-- Chatbot Header -->
+        <div class="chat-header">
+        <div class="header-info">
+            <svg class="chatbot-logo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+            <path
+                d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"
+            />
+            </svg>
+            <h2 class="logo-text">Resume Helper</h2>
+        </div>
+        <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
+        </div>
+        <!-- Chatbot Body -->
+        <div class="chat-body">
+        <div class="message bot-message">
+            <svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+            <path
+                d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"
+            />
+            </svg>
+            <div class="message-text">Hello! I'm your resume assistant. How can I help you today?</div>
+        </div>
+        </div>
+        <!-- Chatbot Footer -->
+        <div class="chat-footer">
+        <form action="#" class="chat-form">
+            <textarea placeholder="Ask me about resumes..." class="message-input" required></textarea>
+            <div class="chat-controls">
+            <div class="file-upload-wrapper">
+                <input type="file" accept="image/*" id="file-input" hidden />
+                <img src="#" />
+                <button type="button" id="file-upload" class="material-symbols-rounded">attach_file</button>
+                <button type="button" id="file-cancel" class="material-symbols-rounded">close</button>
+            </div>
+            <button type="submit" id="send-message" class="material-symbols-rounded">arrow_upward</button>
+            </div>
+        </form>
+       </div>
+      </div>
+    </div>
+  <!-- Google Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <!-- Chatbot CSS -->
+    <link rel="stylesheet" href="../static/css/chatbot.css" />
+    <!-- Chatbot JS -->
+    <script src="../static/js/chatbot.js"></script>
+    <!-- bootstrap js -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+    <!-- custom js -->
+    <script src="../static/js/resume-status.js"></script>
+    <script src="../static/js/responsive_side_bar.js"></script>
+   
+</body>
+</html>

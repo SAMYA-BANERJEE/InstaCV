@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Template 27 - Professional Teal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Lato', 'Arial', sans-serif;
+      line-height: 1.5;
+      color: #333;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    .resume-container {
+      background-color: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      padding: 0;
+      width: 210mm; /* A4 width */
+      min-height: 297mm; /* A4 height */
+      position: relative;
+      overflow: hidden;
+    }
+    .resume-header {
+      background-color: #20b2aa;
+      color: white;
+      padding: 25px 30px;
+      position: relative;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left {
+      flex: 1;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .profile-img {
+      width: 110px;
+      height: 110px;
+      border-radius: 5px;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .profile-placeholder {
+      width: 110px;
+      height: 110px;
+      border-radius: 5px;
+      background-color: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 26px;
+      margin: 0 0 5px 0;
+      color: white;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .title {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    .contact-info {
+      font-size: 12px;
+      color: rgba(255,255,255,0.9);
+    }
+    .contact-item {
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+    }
+    .contact-icon {
+      margin-right: 8px;
+      opacity: 0.9;
+    }
+    .resume-body {
+      padding: 30px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #20b2aa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #20b2aa;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+    .education-item, .project-item {
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .education-item h3, .project-item h3 {
+      font-size: 14px;
+      margin: 0 0 3px 0;
+      color: #333;
+      font-weight: 700;
+    }
+    .date {
+      color: #20b2aa;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    p {
+      font-size: 12px;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .skill-item {
+      margin-bottom: 8px;
+    }
+    .skill-name {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      font-size: 12px;
+      color: #333;
+    }
+    .skill-level {
+      height: 6px;
+      background-color: #eee;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .skill-progress {
+      height: 100%;
+      background-color: #20b2aa;
+      border-radius: 3px;
+    }
+    .languages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .language-item {
+      text-align: center;
+      font-size: 12px;
+      color: #333;
+    }
+    /* Updated language chart styling for better PDF compatibility */
+    .language-chart {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 0 auto 5px;
+      position: relative;
+      border: 2px solid #eee;
+      box-sizing: border-box;
+    }
+    .language-chart-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #20b2aa;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+    }
+    .language-chart-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10px;
+      font-weight: 600;
+      color: #333;
+    }
+    .interests-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .interest-item {
+      background-color: #f9f9f9;
+      border-radius: 3px;
+      padding: 5px 10px;
+      font-size: 11px;
+      color: #555;
+      border: 1px solid #eee;
+    }
+    .achievements-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .achievement-item {
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #555;
+      position: relative;
+      padding-left: 15px;
+    }
+    .achievement-item::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #20b2aa;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .btn-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .btn-download, .btn-preview {
+      background-color: #20b2aa;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(32, 178, 170, 0.3);
+    }
+    .btn-download:hover, .btn-preview:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(32, 178, 170, 0.4);
+      background-color: #1c9e98;
+    }
+    
+    /* Page break controls for PDF generation */
+    .avoid-page-break {
+      page-break-inside: avoid !important;
+    }
+    
+    /* PDF-specific styles */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+      .resume-container {
+        box-shadow: none;
+        margin: 0;
+        border: none;
+        width: 210mm;
+        min-height: 297mm;
+      }
+      .btn-container {
+        display: none;
+      }
+    }
+    
+    /* Special class for PDF generation */
+    .pdf-mode {
+      margin: 0 !important;
+      max-width: 210mm !important; /* Ensure content fits within PDF margins */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="btn-container">
+      <button class="btn-preview" onclick="previewResume()">Preview Resume</button>
+      <button class="btn-download" onclick="downloadPDF()">Download as PDF</button>
+    </div>
+    
+    <div class="resume-container" id="resume">
+      <div class="resume-header avoid-page-break">
+        <div class="header-content">
+          <div class="header-left">
+            <h1>{{ user_data.personal.name if user_data.personal else user_data.user.name }}</h1>
+            <div class="title">Software Developer & Data Analyst</div>
+            <div class="contact-info">
+              <div class="contact-item">
+                <span class="contact-icon">📍</span>
+                <span>{{ user_data.personal.address if user_data.personal and user_data.personal.address else 'Mahalaxmi Park Road House No. 39, 2nd Street, Near Durga Mandir Durga Mandir' }}</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">📱</span>
+                <span>{{ user_data.personal.phone if user_data.personal and user_data.personal.phone else '09564804551' }}</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">📧</span>
+                <span>{{ user_data.personal.email if user_data.personal else user_data.user.email }}</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">🔗</span>
+                <span>linkedin.com/in/username</span>
+              </div>
+            </div>
+          </div>
+          <div class="header-right">
+            {% if user_data.personal and user_data.personal.photo %}
+            {% set photo_path = user_data.personal.photo.replace('\\', '/').split('�')[0] %}
+            <img src="{{ url_for('static', filename=photo_path) }}" alt="Profile Photo" class="profile-img">
+            {% else %}
+            <div class="profile-placeholder">
+              {{ user_data.user.name[0].upper() if user_data.user else "R" }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="resume-body">
+        <div class="section avoid-page-break">
+          <div class="section-title">Objective</div>
+          <p>{{ user_data.objective.objective_text if user_data.objective else "Aspiring Software Developer and Data Analyst with a strong foundation in Python, Tkinter and web development. Seeking an opportunity to apply my skills in software development while expanding my expertise in data analytics and problem-solving." }}</p>
+        </div>
+        
+        <div class="resume-grid">
+          <div class="left-column">
+            <div class="section avoid-page-break">
+              <div class="section-title">Education</div>
+              {% if user_data.education %}
+                {% for edu in user_data.education %}
+                <div class="education-item avoid-page-break">
+                  <h3>{{ edu.course }}</h3>
+                  <div class="date">{{ edu.year }}</div>
+                  <p><strong>{{ edu.school }}</strong></p>
+                  <p>{{ edu.grade }}</p>
+                </div>
+                {% endfor %}
+              {% else %}
+              <div class="education-item avoid-page-break">
+                <h3>BCA</h3>
+                <div class="date">2022-2025</div>
+                <p><strong>ABS ACADEMY SCIENCE TECHNOLOGY AND MANAGEMENT</strong></p>
+                <p>77</p>
+              </div>
+              <div class="education-item avoid-page-break">
+                <h3>MCA</h3>
+                <div class="date">2025-2027</div>
+                <p><strong>ABS ACADEMY SCIENCE TECHNOLOGY AND MANAGEMENT</strong></p>
+                <p>54.55</p>
+              </div>
+              {% endif %}
+            </div>
+            
+            <div class="section avoid-page-break">
+              <div class="section-title">Skills</div>
+              <div class="skills-grid">
+                {% if user_data.skills %}
+                  {% for skill in user_data.skills %}
+                  <div class="skill-item">
+                    <div class="skill-name">
+                      <span>{{ skill.skill_name }}</span>
+                    </div>
+                    <div class="skill-level">
+                      <div class="skill-progress" style="width: 85%;"></div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                {% else %}
+                <div class="skill-item">
+                  <div class="skill-name">
+                    <span>MySQL</span>
+                  </div>
+                  <div class="skill-level">
+                    <div class="skill-progress" style="width: 90%;"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-name">
+                    <span>Python</span>
+                  </div>
+                  <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%;"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-name">
+                    <span>Excel</span>
+                  </div>
+                  <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%;"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-name">
+                    <span>Power BI</span>
+                  </div>
+                  <div class="skill-level">
+                    <div class="skill-progress" style="width: 65%;"></div>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+              <div class="section-title">Interests</div>
+              <div class="interests-container">
+                <div class="interest-item">Web Development</div>
+                <div class="interest-item">Data Science</div>
+                <div class="interest-item">Machine Learning</div>
+                <div class="interest-item">UI/UX Design</div>
+                <div class="interest-item">Open Source</div>
+                <div class="interest-item">Mobile App Development</div>
+                <div class="interest-item">Cloud Computing</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="right-column">
+            <div class="section avoid-page-break">
+              <div class="section-title">Projects</div>
+              {% if user_data.projects %}
+                {% for project in user_data.projects %}
+                <div class="project-item avoid-page-break">
+                  <h3>{{ project.project_title }}</h3>
+                  <p>{{ project.project_description }}</p>
+                </div>
+                {% endfor %}
+              {% else %}
+              <div class="project-item avoid-page-break">
+                <h3>Gaming Web App</h3>
+                <p>a small app to play games to the website.</p>
+              </div>
+              <div class="project-item avoid-page-break">
+                <h3>Notepad 📝</h3>
+                <p>a notepad to add the daily tasks and remainders for daily day to day tasks.</p>
+              </div>
+              <div class="project-item avoid-page-break">
+                <h3>Digital Board</h3>
+                <p>a digital board to draw patterns and add write texts and save them as a picture.</p>
+              </div>
+              {% endif %}
+            </div>
+            
+            <div class="section avoid-page-break">
+              <div class="section-title">Languages</div>
+              <div class="languages-grid">
+                <!-- Updated language chart implementation for better PDF compatibility -->
+                <div class="language-item">
+                  <div class="language-chart">
+                    <div class="language-chart-fill" style="height: 80%;"></div>
+                    <div class="language-chart-text">80%</div>
+                  </div>
+                  <div>English</div>
+                </div>
+                <div class="language-item">
+                  <div class="language-chart">
+                    <div class="language-chart-fill" style="height: 100%;"></div>
+                    <div class="language-chart-text">100%</div>
+                  </div>
+                  <div>Hindi</div>
+                </div>
+                <div class="language-item">
+                  <div class="language-chart">
+                    <div class="language-chart-fill" style="height: 100%;"></div>
+                    <div class="language-chart-text">100%</div>
+                  </div>
+                  <div>Bengali</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="section avoid-page-break">
+              <div class="section-title">Certifications</div>
+              <div class="project-item avoid-page-break">
+                <h3>Python Programming</h3>
+                <div class="date">2023</div>
+                <p>Comprehensive Python programming course covering data structures, algorithms, and application development.</p>
+              </div>
+              <div class="project-item avoid-page-break">
+                <h3>Web Development</h3>
+                <div class="date">2023</div>
+                <p>HTML, CSS, and JavaScript fundamentals for creating responsive and interactive web applications.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function downloadPDF() {
+      // Fix image paths for PDF generation
+      const fixImagePaths = function() {
+        const images = document.querySelectorAll('#resume img');
+        const originalSources = [];
+        
+        images.forEach((img, index) => {
+          originalSources[index] = img.src;
+          
+          if (img.src.indexOf('http') !== 0 && img.src.indexOf('data:') !== 0) {
+            const a = document.createElement('a');
+            a.href = img.src;
+            img.src = a.href;
+          }
+        });
+        
+        return function() {
+          images.forEach((img, index) => {
+            img.src = originalSources[index];
+          });
+        };
+      };
+      
+      // Hide buttons before generating PDF
+      const btnContainer = document.querySelector('.btn-container');
+      btnContainer.style.display = 'none';
+      
+      // Add PDF mode class for special styling
+      const resumeElement = document.getElementById('resume');
+      resumeElement.classList.add('pdf-mode');
+      
+      const restoreImages = fixImagePaths();
+      
+      // Create a clone of the resume for PDF generation
+      const element = resumeElement.cloneNode(true);
+      
+      const opt = {
+        margin: [0, 0, 0, 0], // No margins since we have built-in padding
+        filename: 'resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 1.3,
+          useCORS: true,
+          allowTaint: true,
+          letterRendering: true,
+          x: 0,
+          y: 0,
+          scrollY: 0,
+          windowWidth: 210 * 2.5,
+          windowHeight: 297 * 2.5
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true,
+          precision: 16
+        },
+        pagebreak: {
+          mode: ['avoid-all', 'css', 'legacy'],
+          avoid: '.avoid-page-break'
+        }
+      };
+      
+      // Generate PDF
+      html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(function() {
+          // Show buttons again after PDF is generated
+          btnContainer.style.display = 'block';
+          // Remove PDF mode class
+          resumeElement.classList.remove('pdf-mode');
+          restoreImages();
+        });
+    }
+    
+    function previewResume() {
+      // Open a new window with just the resume content
+      const resumeContent = document.getElementById('resume').outerHTML;
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Resume Preview</title>
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+              background-color: #f5f5f5;
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              min-height: 100vh;
+              padding-top: 20px;
+            }
+            ${document.querySelector('style').innerHTML}
+            
+            /* Additional styles for preview window */
+            .container {
+              max-width: 210mm;
+              margin: 0 auto;
+              padding: 0;
+            }
+            .resume-container {
+              margin: 0 auto;
+              width: 210mm;
+            }
+            .btn-container {
+              display: none;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            ${resumeContent}
+          </div>
+        </body>
+        </html>
+      `);
+      newWindow.document.close();
+    }
+  </script>
+</body>
+</html>

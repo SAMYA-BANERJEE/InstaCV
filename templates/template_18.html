@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Template 18 - Modern Accent</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      line-height: 1.5;
+      color: #333;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    .resume-container {
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      padding: 30px;
+      width: 210mm; /* A4 width */
+      min-height: 297mm; /* A4 height */
+      position: relative;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #4a6fa5;
+      padding-bottom: 15px;
+    }
+    .header-left {
+      flex: 1;
+    }
+    .header-right {
+      text-align: right;
+      color: #4a6fa5;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 5px 0;
+      color: #4a6fa5;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .job-title {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .contact-info {
+      font-size: 13px;
+      color: #555;
+    }
+    .contact-info p {
+      margin: 0 0 3px 0;
+    }
+    .section {
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #4a6fa5;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+    }
+    .section-title::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background-color: #ddd;
+      margin-left: 10px;
+    }
+    .education-item, .project-item {
+      margin-bottom: 12px;
+    }
+    .education-item h3, .project-item h3 {
+      font-size: 14px;
+      margin: 0 0 3px 0;
+      color: #333;
+      font-weight: 600;
+    }
+    .date {
+      color: #666;
+      margin-bottom: 3px;
+      font-size: 12px;
+      font-style: italic;
+    }
+    p {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+    ul {
+      padding-left: 18px;
+      margin-bottom: 10px;
+    }
+    ul li {
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-item {
+      background-color: #f0f5ff;
+      border: 1px solid #d0e0ff;
+      border-radius: 3px;
+      padding: 3px 8px;
+      font-size: 12px;
+      color: #4a6fa5;
+    }
+    .btn-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .btn-download, .btn-preview {
+      background-color: #4a6fa5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    .btn-download:hover, .btn-preview:hover {
+      background-color: #3a5a8a;
+    }
+    
+    /* Page break controls for PDF generation */
+    .avoid-page-break {
+      page-break-inside: avoid !important;
+    }
+    
+    /* PDF-specific styles */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+      .resume-container {
+        box-shadow: none;
+        margin: 0;
+        border: none;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20px;
+      }
+      .btn-container {
+        display: none;
+      }
+    }
+    
+    /* Special class for PDF generation */
+    .pdf-mode {
+      margin: 0 !important;
+      padding: 25px !important; /* Reduced padding for PDF mode */
+      max-width: 190mm !important; /* Ensure content fits within PDF margins */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="btn-container">
+      <button class="btn-preview" onclick="previewResume()">Preview Resume</button>
+      <button class="btn-download" onclick="downloadPDF()">Download as PDF</button>
+    </div>
+    
+    <div class="resume-container" id="resume">
+      <div class="header avoid-page-break">
+        <div class="header-left">
+          <h1>{{ user_data.personal.name if user_data.personal else user_data.user.name }}</h1>
+          <div class="job-title">Software Developer & Data Analyst</div>
+          <div class="contact-info">
+            <p>{{ user_data.personal.address if user_data.personal and user_data.personal.address else '' }}</p>
+            <p>{{ user_data.personal.phone if user_data.personal and user_data.personal.phone else '' }} | {{ user_data.personal.email if user_data.personal else user_data.user.email }}</p>
+          </div>
+        </div>
+        <div class="header-right">
+          {% if user_data.personal and user_data.personal.photo %}
+          {% set photo_path = user_data.personal.photo.replace('\\', '/').split('�')[0] %}
+          <img src="{{ url_for('static', filename=photo_path) }}" alt="Profile Photo" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #4a6fa5;">
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Objective</div>
+        <p>{{ user_data.objective.objective_text if user_data.objective else "Aspiring Software Developer and Data Analyst with a strong foundation in Python, Tkinter and web development. Seeking an opportunity to apply my skills in software development while expanding expertise in data analytics and problem-solving." }}</p>
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Education</div>
+        {% if user_data.education %}
+          {% for edu in user_data.education %}
+          <div class="education-item avoid-page-break">
+            <h3>{{ edu.course }}</h3>
+            <div class="date">{{ edu.year }}</div>
+            <p><strong>{{ edu.school }}</strong></p>
+            <p>{{ edu.grade }}</p>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="education-item avoid-page-break">
+          <h3>Bachelor of Computer Applications</h3>
+          <div class="date">2022 - 2025</div>
+          <p><strong>Maulana Abul Kalam Azad University of Technology, West Bengal</strong></p>
+          <p>8.33</p>
+        </div>
+        {% endif %}
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Skills</div>
+        <div class="skills-container">
+          {% if user_data.skills %}
+            {% for skill in user_data.skills %}
+            <div class="skill-item">{{ skill.skill_name }}</div>
+            {% endfor %}
+          {% else %}
+          <div class="skill-item">HTML</div>
+          <div class="skill-item">CSS</div>
+          <div class="skill-item">JavaScript</div>
+          <div class="skill-item">Python</div>
+          <div class="skill-item">MySQL</div>
+          <div class="skill-item">Flask</div>
+          <div class="skill-item">Tkinter</div>
+          <div class="skill-item">Git</div>
+          <div class="skill-item">Data Analysis</div>
+          <div class="skill-item">Problem Solving</div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Projects</div>
+        {% if user_data.projects %}
+          {% for project in user_data.projects %}
+          <div class="project-item avoid-page-break">
+            <h3>{{ project.project_title }}</h3>
+            <p>{{ project.project_description }}</p>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="project-item avoid-page-break">
+          <h3>Resume Maker</h3>
+          <p>A web-based application that allows users to create professional resumes using pre-built templates. Built with Flask, HTML, CSS, and JavaScript.</p>
+        </div>
+        <div class="project-item avoid-page-break">
+          <h3>Internet Speed Test App</h3>
+          <p>A Python Tkinter-based application that measures internet speed using the Speedtest API. Features a clean UI and detailed metrics.</p>
+        </div>
+        {% endif %}
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Languages</div>
+        <div class="skills-container">
+          <div class="skill-item">English</div>
+          <div class="skill-item">Hindi</div>
+          <div class="skill-item">Bengali</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function downloadPDF() {
+      // Fix image paths for PDF generation
+      const fixImagePaths = function() {
+        const images = document.querySelectorAll('#resume img');
+        const originalSources = [];
+        
+        images.forEach((img, index) => {
+          originalSources[index] = img.src;
+          
+          if (img.src.indexOf('http') !== 0 && img.src.indexOf('data:') !== 0) {
+            const a = document.createElement('a');
+            a.href = img.src;
+            img.src = a.href;
+          }
+        });
+        
+        return function() {
+          images.forEach((img, index) => {
+            img.src = originalSources[index];
+          });
+        };
+      };
+      
+      // Hide buttons before generating PDF
+      const btnContainer = document.querySelector('.btn-container');
+      btnContainer.style.display = 'none';
+      
+      // Add PDF mode class for special styling
+      const resumeElement = document.getElementById('resume');
+      resumeElement.classList.add('pdf-mode');
+      
+      const restoreImages = fixImagePaths();
+      
+      // Create a clone of the resume for PDF generation
+      const element = resumeElement.cloneNode(true);
+      
+      const opt = {
+        margin: [10, 10, 10, 10], // Reduced margins [top, right, bottom, left]
+        filename: 'resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 1.3,
+          useCORS: true,
+          allowTaint: true,
+          letterRendering: true,
+          x: 0,
+          y: 0,
+          scrollY: 0,
+          windowWidth: 210 * 2.5,
+          windowHeight: 297 * 2.5,
+          // Ensure content fits properly
+          onclone: function(clonedDoc) {
+            const header = clonedDoc.querySelector('.header');
+            if (header) {
+              header.style.width = '100%';
+              header.style.maxWidth = '190mm';
+            }
+            
+            // Ensure all content is properly sized
+            const sections = clonedDoc.querySelectorAll('.section');
+            sections.forEach(section => {
+              section.style.width = '100%';
+              section.style.maxWidth = '190mm';
+            });
+          }
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true,
+          precision: 16
+        },
+        pagebreak: {
+          mode: ['avoid-all', 'css', 'legacy'],
+          avoid: '.avoid-page-break'
+        }
+      };
+      
+      // Generate PDF
+      html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(function() {
+          // Show buttons again after PDF is generated
+          btnContainer.style.display = 'block';
+          // Remove PDF mode class
+          resumeElement.classList.remove('pdf-mode');
+          restoreImages();
+        });
+    }
+    
+    function previewResume() {
+      // Open a new window with just the resume content
+      const resumeContent = document.getElementById('resume').outerHTML;
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Resume Preview</title>
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+              background-color: #f5f5f5;
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              min-height: 100vh;
+              padding-top: 20px;
+            }
+            ${document.querySelector('style').innerHTML}
+            
+            /* Additional styles for preview window */
+            .container {
+              max-width: 210mm;
+              margin: 0 auto;
+              padding: 0;
+            }
+            .resume-container {
+              margin: 0 auto;
+              width: 210mm;
+            }
+            .btn-container {
+              display: none;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            ${resumeContent}
+          </div>
+        </body>
+        </html>
+      `);
+      newWindow.document.close();
+    }
+  </script>
+</body>
+</html>

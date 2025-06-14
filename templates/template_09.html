@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Template 9 - Clean Borders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    .resume-container {
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      padding: 30px;
+      width: 210mm; /* A4 width */
+      min-height: 297mm; /* A4 height */
+      position: relative;
+      border: 1px solid #ddd;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #333;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: block;
+      border: 3px solid #333;
+    }
+    h1 {
+      font-size: 28px;
+      margin: 0 0 5px 0;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .section {
+      margin-bottom: 25px;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+    .education-item, .project-item {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed #ddd;
+    }
+    .education-item:last-child, .project-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .education-item h3, .project-item h3 {
+      font-size: 16px;
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+    .date {
+      color: #777;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    ul li {
+      margin-bottom: 5px;
+    }
+    .btn-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .btn-download, .btn-preview {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-download:hover, .btn-preview:hover {
+      background-color: #555;
+    }
+    
+    /* Page break controls for PDF generation */
+    .avoid-page-break {
+      page-break-inside: avoid !important;
+    }
+    
+    /* PDF-specific styles */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+      .resume-container {
+        box-shadow: none;
+        margin: 0;
+        border: none;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20px;
+      }
+      .btn-container {
+        display: none;
+      }
+    }
+    
+      /* Special class for PDF generation */
+      .pdf-mode {
+      margin: 0 !important;
+      padding: 30px !important; /* Added padding for PDF mode */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="btn-container">
+      <button class="btn-preview" onclick="previewResume()">Preview Resume</button>
+      <button class="btn-download" onclick="downloadPDF()">Download as PDF</button>
+    </div>
+    
+    <div class="resume-container" id="resume">
+      <div class="header avoid-page-break">
+        {% if user_data.personal and user_data.personal.photo %}
+        {% set photo_path = user_data.personal.photo.replace('\\', '/').split('�')[0] %}
+        <img src="{{ url_for('static', filename=photo_path) }}" alt="Profile Photo" class="profile-img">
+        {% else %}
+        <div class="profile-img" style="background-color: #333; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+          {{ user_data.user.name[0].upper() }}
+        </div>
+        {% endif %}
+        <h1>{{ user_data.personal.name if user_data.personal else user_data.user.name }}</h1>
+        <p>{{ user_data.personal.address if user_data.personal and user_data.personal.address else '' }}</p>
+        <p>{{ user_data.personal.phone if user_data.personal and user_data.personal.phone else '' }} | {{ user_data.personal.email if user_data.personal else user_data.user.email }}</p>
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Objective</div>
+        <p>{{ user_data.objective.objective_text if user_data.objective else "Aspiring professional seeking opportunities to apply skills and knowledge." }}</p>
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Education</div>
+        {% if user_data.education %}
+          {% for edu in user_data.education %}
+          <div class="education-item avoid-page-break">
+            <h3>{{ edu.course }}</h3>
+            <div class="date">{{ edu.year }}</div>
+            <p><strong>{{ edu.school }}</strong></p>
+            <p>{{ edu.grade }}</p>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="education-item avoid-page-break">
+          <h3>Bachelor of Computer Applications</h3>
+          <div class="date">2022 - 2025</div>
+          <p><strong>Maulana Abul Kalam Azad University of Technology, West Bengal</strong></p>
+          <p>8.33</p>
+        </div>
+        {% endif %}
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Skills</div>
+        <ul>
+          {% if user_data.skills %}
+            {% for skill in user_data.skills %}
+            <li>{{ skill.skill_name }}</li>
+            {% endfor %}
+          {% else %}
+          <li>HTML</li>
+          <li>PYTHON</li>
+          <li>CSS</li>
+          <li>MySQL</li>
+          <li>FLASK (Python API)</li>
+          <li>TKINTER (Python GUI)</li>
+          {% endif %}
+        </ul>
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Projects</div>
+        {% if user_data.projects %}
+          {% for project in user_data.projects %}
+          <div class="project-item avoid-page-break">
+            <h3>{{ project.project_title }}</h3>
+            <p>{{ project.project_description }}</p>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="project-item avoid-page-break">
+          <h3>Resume Maker</h3>
+          <p>A web-based application that allows users to create professional resumes using pre-built templates.</p>
+        </div>
+        <div class="project-item avoid-page-break">
+          <h3>Internet Speed Test App</h3>
+          <p>A Python Tkinter-based application that measures internet speed using the Speedtest API.</p>
+        </div>
+        {% endif %}
+      </div>
+      
+      <div class="section avoid-page-break">
+        <div class="section-title">Languages</div>
+        <ul>
+          <li>English</li>
+          <li>Hindi</li>
+          <li>Bengali</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function downloadPDF() {
+      // Fix image paths for PDF generation
+      const fixImagePaths = function() {
+        const images = document.querySelectorAll('#resume img');
+        const originalSources = [];
+        
+        images.forEach((img, index) => {
+          originalSources[index] = img.src;
+          
+          if (img.src.indexOf('http') !== 0 && img.src.indexOf('data:') !== 0) {
+            const a = document.createElement('a');
+            a.href = img.src;
+            img.src = a.href;
+          }
+        });
+        
+        return function() {
+          images.forEach((img, index) => {
+            img.src = originalSources[index];
+          });
+        };
+      };
+      
+      // Hide buttons before generating PDF
+      const btnContainer = document.querySelector('.btn-container');
+      btnContainer.style.display = 'none';
+      
+      // Add PDF mode class for special styling
+      const resumeElement = document.getElementById('resume');
+      resumeElement.classList.add('pdf-mode');
+      
+      const restoreImages = fixImagePaths();
+      
+      // Create a clone of the resume for PDF generation
+      const element = resumeElement.cloneNode(true);
+      
+      const opt = {
+        margin: [0, 0, 0, 0], // [top, right, bottom, left] - all set to 0
+        filename: 'resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          letterRendering: true,
+          x: 0,
+          y: 0,
+          scrollY: 0, // Prevent scrolling offset
+          windowWidth: 210 * 3.78, // Match the width
+          windowHeight: 297 * 3.78, // Match the height
+          // Force top position to be 0
+          onclone: function(clonedDoc) {
+            const header = clonedDoc.querySelector('.header');
+            if (header) {
+              header.style.marginTop = '0';
+            }
+          }
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true,
+          hotfixes: ['px_scaling'],
+          precision: 16
+        },
+        pagebreak: {
+          mode: ['avoid-all', 'css', 'legacy'],
+          avoid: '.avoid-page-break'
+        }
+      };
+      
+      // Generate PDF
+      html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(function() {
+          // Show buttons again after PDF is generated
+          btnContainer.style.display = 'block';
+          // Remove PDF mode class
+          resumeElement.classList.remove('pdf-mode');
+          restoreImages();
+        });
+    }
+    
+    function previewResume() {
+      // Open a new window with just the resume content
+      const resumeContent = document.getElementById('resume').outerHTML;
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Resume Preview</title>
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+              background-color: #f5f5f5;
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              min-height: 100vh;
+              padding-top: 20px;
+            }
+            ${document.querySelector('style').innerHTML}
+            
+            /* Additional styles for preview window */
+            .container {
+              max-width: 210mm;
+              margin: 0 auto;
+              padding: 0;
+            }
+            .resume-container {
+              margin: 0 auto;
+              width: 210mm;
+            }
+            .btn-container {
+              display: none;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            ${resumeContent}
+          </div>
+        </body>
+        </html>
+      `);
+      newWindow.document.close();
+    }
+  </script>
+</body>
+</html>

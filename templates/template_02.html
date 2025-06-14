@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Template 2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .resume-container {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            padding: 0; /* Remove padding */
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            display: flex;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent margin collapse */
+        }
+        .sidebar {
+            background-color: #003366;
+            color: white;
+            width: 30%;
+            padding: 30px 20px;
+            margin: 0; /* Ensure no margin */
+        }
+        .main-content {
+            width: 70%;
+            padding: 30px 20px;
+            margin: 0; /* Ensure no margin */
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .contact-info {
+            margin-bottom: 30px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .contact-icon {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section-title {
+            color: #003366;
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .section-icon {
+            background-color: #003366;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #003366;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #003366;
+        }
+        .skill-item {
+            margin-bottom: 10px;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .btn-download, .btn-preview {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-download:hover, .btn-preview:hover {
+            background-color: #002244;
+        }
+        
+        /* Page break controls for PDF generation */
+        .avoid-page-break {
+            page-break-inside: avoid !important;
+        }
+        .page-break-before {
+            page-break-before: always !important;
+        }
+        .page-break-after {
+            page-break-after: always !important;
+        }
+        
+        /* PDF-specific styles */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+                margin: 0;
+                border: none;
+                width: 210mm;
+                min-height: 297mm;
+                padding: 0;
+            }
+            .btn-container {
+                display: none;
+            }
+            
+            /* Ensure proper page breaks in print mode */
+            .sidebar {
+                page-break-inside: avoid;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+        @media (max-width: 768px) {
+            .resume-container {
+                flex-direction: column;
+                width: 100%;
+            }
+            .sidebar, .main-content {
+                width: 100%;
+            }
+        }
+        
+        /* Fix for top margin in sidebar */
+        .sidebar h1 {
+            margin-top: 0;
+        }
+        
+        /* Special class for PDF generation */
+        .pdf-mode {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .pdf-mode .sidebar {
+            margin-top: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn-container">
+            <button class="btn-preview" onclick="previewResume()">Preview Resume</button>
+            <button class="btn-download" onclick="downloadPDF()">Download as PDF</button>
+        </div>
+        
+        <div class="resume-container" id="resume">
+            <div class="sidebar avoid-page-break">
+                <h1>{{ user_data.personal.name if user_data.personal else user_data.user.name }}</h1>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">@</span>
+                        {{ user_data.personal.email if user_data.personal else user_data.user.email }}
+                    </div>
+                    {% if user_data.personal and user_data.personal.phone %}
+                    <div class="contact-item">
+                        <span class="contact-icon">📱</span>
+                        {{ user_data.personal.phone }}
+                    </div>
+                    {% endif %}
+                    {% if user_data.personal and user_data.personal.address %}
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        {{ user_data.personal.address }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if user_data.personal and user_data.personal.photo %}
+                {% set photo_path = user_data.personal.photo.replace('\\', '/').split('�')[0] %}
+                <img src="{{ url_for('static', filename=photo_path) }}" alt="Profile Photo" class="profile-img">
+                {% else %}
+                <div class="profile-img" style="background-color: #3498db; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                    {{ user_data.user.name[0].upper() }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="main-content">
+                <div class="section avoid-page-break">
+                    <div class="section-title">
+                        <span class="section-icon">O</span>
+                        Objective
+                    </div>
+                    <p>{{ user_data.objective.objective_text if user_data.objective else "Aspiring professional seeking opportunities to apply skills and knowledge." }}</p>
+                </div>
+                
+                <div class="section avoid-page-break">
+                    <div class="section-title">
+                        <span class="section-icon">E</span>
+                        Education
+                    </div>
+                    <div class="timeline">
+                        {% if user_data.education %}
+                            {% for edu in user_data.education %}
+                            <div class="timeline-item avoid-page-break">
+                                <h3>{{ edu.school }}</h3>
+                                <p>{{ edu.year }}</p>
+                                <p>{{ edu.course }}</p>
+                                <p>{{ edu.grade }}</p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="timeline-item avoid-page-break">
+                            <h3>University Name</h3>
+                            <p>2020 - 2024</p>
+                            <p>Degree in Field of Study</p>
+                            <p>GPA: 3.8/4.0</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="section avoid-page-break">
+                    <div class="section-title">
+                        <span class="section-icon">S</span>
+                        Skills
+                    </div>
+                    <div class="timeline">
+                        {% if user_data.skills %}
+                            {% for skill in user_data.skills %}
+                            <div class="skill-item">
+                                <h4>{{ skill.skill_name }}</h4>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="skill-item">
+                            <h4>HTML</h4>
+                        </div>
+                        <div class="skill-item">
+                            <h4>CSS</h4>
+                        </div>
+                        <div class="skill-item">
+                            <h4>JavaScript</h4>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Python</h4>
+                        </div>
+                        <div class="skill-item">
+                            <h4>SQL</h4>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="section avoid-page-break">
+                    <div class="section-title">
+                        <span class="section-icon">P</span>
+                        Projects
+                    </div>
+                    <div class="timeline">
+                        {% if user_data.projects %}
+                            {% for project in user_data.projects %}
+                            <div class="timeline-item avoid-page-break">
+                                <h3>{{ project.project_title }}</h3>
+                                <p>{{ project.project_description }}</p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="timeline-item avoid-page-break">
+                            <h3>Project Name</h3>
+                            <p>A brief description of the project, technologies used, and outcomes achieved.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            // Hide buttons before generating PDF
+            const btnContainer = document.querySelector('.btn-container');
+            btnContainer.style.display = 'none';
+            
+            // Add PDF mode class for special styling
+            const resumeElement = document.getElementById('resume');
+            resumeElement.classList.add('pdf-mode');
+            
+            // Create a clone of the resume for PDF generation
+            const element = resumeElement.cloneNode(true);
+            
+            const opt = {
+                margin: [0, 0, 0, 0], // [top, right, bottom, left] - all set to 0
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    letterRendering: true,
+                    x: 0,
+                    y: 0,
+                    scrollY: 0, // Prevent scrolling offset
+                    windowWidth: 210 * 3.78, // Match the width
+                    windowHeight: 297 * 3.78, // Match the height
+                    // Force top position to be 0
+                    onclone: function(clonedDoc) {
+                        const sidebar = clonedDoc.querySelector('.sidebar');
+                        if (sidebar) {
+                            sidebar.style.marginTop = '0';
+                            sidebar.style.paddingTop = '30px';
+                        }
+                    }
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true,
+                    hotfixes: ['px_scaling'],
+                    precision: 16
+                },
+                pagebreak: {
+                    mode: ['avoid-all', 'css', 'legacy'],
+                    before: '.page-break-before',
+                    after: '.page-break-after',
+                    avoid: '.avoid-page-break'
+                }
+            };
+            
+            // Generate PDF
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .save()
+                .then(function() {
+                    // Show buttons again after PDF is generated
+                    btnContainer.style.display = 'block';
+                    // Remove PDF mode class
+                    resumeElement.classList.remove('pdf-mode');
+                });
+        }
+        
+        function previewResume() {
+            // Open a new window with just the resume content
+            const resumeContent = document.getElementById('resume').outerHTML;
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Resume Preview</title>
+                    <style>
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f5f5f5;
+                            display: flex;
+                            justify-content: center;
+                            align-items: flex-start;
+                            min-height: 100vh;
+                            padding-top: 20px;
+                        }
+                        ${document.querySelector('style').innerHTML}
+                        
+                        /* Additional styles for preview window */
+                        .resume-container {
+                            margin: 0 auto;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        ${resumeContent}
+                    </div>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Templates</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/templates.css">
+  <style>
+    /* Additional styles for template categories */
+    .category-header {
+      margin: 40px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+      position: relative;
+    }
+    
+    .category-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    .category-description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    
+    .category-icon {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background-color: #4a6cf7;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    
+    .category-professional .category-icon {
+      background-color: #2c3e50;
+    }
+    
+    .category-creative .category-icon {
+      background-color: #e74c3c;
+    }
+    
+    .category-minimal .category-icon {
+      background-color: #27ae60;
+    }
+    
+    /* Filter buttons */
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .filter-btn {
+      padding: 8px 16px;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover {
+      background-color: #e9e9e9;
+    }
+    
+    .filter-btn.active {
+      background-color: #4a6cf7;
+      color: white;
+      border-color: #4a6cf7;
+    }
+    
+    .filter-btn.professional.active {
+      background-color: #2c3e50;
+      border-color: #2c3e50;
+    }
+    
+    .filter-btn.creative.active {
+      background-color: #e74c3c;
+      border-color: #e74c3c;
+    }
+    
+    .filter-btn.minimal.active {
+      background-color: #27ae60;
+      border-color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+      <div class="container">
+          <h1>Choose Your Resume Template</h1>
+          <p>Select from our professionally designed templates to create your perfect resume</p>
+      </div>
+  </div>
+  
+  <div class="container">
+      <div class="d-flex justify-content-end">
+          <a href="{{ url_for('saved_templates') }}" class="view-saved-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              View Saved Templates
+          </a>
+      </div>
+      
+      <!-- Filter buttons -->
+      <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All Templates</button>
+          <button class="filter-btn professional" data-filter="professional">Professional</button>
+          <button class="filter-btn creative" data-filter="creative">Creative</button>
+          <button class="filter-btn minimal" data-filter="minimal">Minimal</button>
+      </div>
+      
+      <!-- Professional Templates Section -->
+      <div class="category-header category-professional">
+          <div class="category-title"><span class="category-icon"><i class="fas fa-briefcase"></i></span>Professional Templates</div>
+          <div class="category-description">Polished and traditional designs perfect for corporate and formal job applications</div>
+      </div>
+      
+      <div class="row" id="professional-templates">
+          <!-- Template 01 - Professional Dark -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_01_preview.jpg') }}" alt="Template 1" class="template-img">
+                      <button class="save-btn" data-template-id="template_01">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Professional Dark</div>
+                      <div class="template-description">A sophisticated template with a dark header bar, clean section organization, and professional typography ideal for corporate positions.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_01')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_01') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 04 - Two Column -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_04_preview.jpg') }}" alt="Template 4" class="template-img">
+                      <button class="save-btn" data-template-id="template_04">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Two Column</div>
+                      <div class="template-description">A professional layout with a dark sidebar and skill measurement bars that efficiently utilizes space to highlight your expertise.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_04')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_04') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 05 - Blue Gradient -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_05_preview.jpg') }}" alt="Template 5" class="template-img">
+                      <button class="save-btn" data-template-id="template_05">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Blue Gradient</div>
+                      <div class="template-description">A polished template with subtle blue gradient section headers and visual skill indicators for a modern professional look.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_05')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_05') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 19 - Elegant Sidebar -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_19_preview.jpg') }}" alt="Template 19" class="template-img">
+                      <button class="save-btn" data-template-id="template_19">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Elegant Sidebar</div>
+                      <div class="template-description">A sophisticated design with a contrasting dark sidebar and structured content areas creating visual interest and organization.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_19')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_19') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 20 - Modern Two-Column -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_20_preview.jpg') }}" alt="Template 20" class="template-img">
+                      <button class="save-btn" data-template-id="template_20">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Modern Two-Column</div>
+                      <div class="template-description">A contemporary two-column format with blue accent elements and clean typography optimizing space while maintaining readability.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_20')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_20') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 21 - Professional Bordered -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_21_preview.jpg') }}" alt="Template 21" class="template-img">
+                      <button class="save-btn" data-template-id="template_21">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Professional Bordered</div>
+                      <div class="template-description">A refined template with tasteful decorative borders and carefully centered content creating a distinguished, formal appearance.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_21')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_21') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 25 - Modern Dark -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_25_preview.jpg') }}" alt="Template 25" class="template-img">
+                      <button class="save-btn" data-template-id="template_25">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Modern Dark</div>
+                      <div class="template-description">A bold design with dark backgrounds and blue accent elements creating high visual impact while maintaining professional credibility.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_25')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_25') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 27 - Professional Teal -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="professional">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_27_preview.jpg') }}" alt="Template 27" class="template-img">
+                      <button class="save-btn" data-template-id="template_27">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Professional Teal</div>
+                      <div class="template-description">A polished template with teal color accents and grid-based organization offering a fresh take on traditional resume styling.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_27')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_27') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Creative Templates Section -->
+      <div class="category-header category-creative">
+          <div class="category-title"><span class="category-icon"><i class="fas fa-paint-brush"></i></span>Creative Templates</div>
+          <div class="category-description">Bold and innovative designs to help you stand out from the crowd</div>
+      </div>
+      
+      <div class="row" id="creative-templates">
+          <!-- Template 02 - Modern Sidebar -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_02_preview.jpg') }}" alt="Template 2" class="template-img">
+                      <button class="save-btn" data-template-id="template_02">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Modern Sidebar</div>
+                      <div class="template-description">A contemporary design featuring a colored sidebar with timeline elements, perfect for showcasing career progression.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_02')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_02') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 06 - Hexagon Pattern -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_06_preview.jpg') }}" alt="Template 6" class="template-img">
+                      <button class="save-btn" data-template-id="template_06">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Hexagon Pattern</div>
+                      <div class="template-description">A distinctive design featuring a hexagonal profile photo and subtle geometric background pattern that adds visual interest.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_06')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_06') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 07 - Orange Accents -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_07_preview.jpg') }}" alt="Template 7" class="template-img">
+                      <button class="save-btn" data-template-id="template_07">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Orange Accents</div>
+                      <div class="template-description">A clean template with vibrant orange accent icons that draw attention to each section while maintaining a professional appearance.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_07')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_07') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 18 - Modern Accent -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_18_preview.jpg') }}" alt="Template 18" class="template-img">
+                      <button class="save-btn" data-template-id="template_18">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Modern Accent</div>
+                      <div class="template-description">A fresh template with strategic blue accent elements and contemporary layout balancing creativity and professionalism.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_18')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_18') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 22 - Creative Modern -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_22_preview.jpg') }}" alt="Template 22" class="template-img">
+                      <button class="save-btn" data-template-id="template_22">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Creative Modern</div>
+                      <div class="template-description">A dynamic template with purple accent elements and modern layout that helps creative professionals stand out while remaining professional.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_22')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_22') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 23 - Gradient Modern -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_23_preview.jpg') }}" alt="Template 23" class="template-img">
+                      <button class="save-btn" data-template-id="template_23">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Gradient Modern</div>
+                      <div class="template-description">An eye-catching design with smooth purple-blue gradient elements creating depth and visual interest for forward-thinking professionals.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_23')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_23') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 26 - Creative Geometric -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="creative">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_26_preview.jpg') }}" alt="Template 26" class="template-img">
+                      <button class="save-btn" data-template-id="template_26">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Creative Geometric</div>
+                      <div class="template-description">An innovative template with geometric design elements and coral accents ideal for creative fields and design professionals.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_26')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_26') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Minimal Templates Section -->
+      <div class="category-header category-minimal">
+          <div class="category-title"><span class="category-icon"><i class="fas fa-feather"></i></span>Minimal Templates</div>
+          <div class="category-description">Clean and simple designs that focus on content and readability</div>
+      </div>
+      
+      <div class="row" id="minimal-templates">
+          <!-- Template 03 - Blue Header -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_03_preview.jpg') }}" alt="Template 3" class="template-img">
+                      <button class="save-btn" data-template-id="template_03">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Blue Header</div>
+                      <div class="template-description">A streamlined template with distinctive blue section headers and organized bullet points for clear information presentation.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_03')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_03') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 08 - Minimalist Gray -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_08_preview.jpg') }}" alt="Template 8" class="template-img">
+                      <button class="save-btn" data-template-id="template_08">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Minimalist Gray</div>
+                      <div class="template-description">A refined template with subtle checkmark section headers and a clean layout focusing on content clarity and readability.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_08')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_08') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 09 - Clean Borders -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_09_preview.jpg') }}" alt="Template 9" class="template-img">
+                      <button class="save-btn" data-template-id="template_09">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Clean Borders</div>
+                      <div class="template-description">A well-structured design with elegant bordered sections and centered headers creating clear visual separation between content areas.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_09')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_09') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 10 - Simple Underline -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_10_preview.jpg') }}" alt="Template 10" class="template-img">
+                      <button class="save-btn" data-template-id="template_10">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Simple Underline</div>
+                      <div class="template-description">A timeless template with underlined section headers and serif typography lending a classic, scholarly appearance.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_10')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_10') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 11 - Minimal Dots -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_11_preview.jpg') }}" alt="Template 11" class="template-img">
+                      <button class="save-btn" data-template-id="template_11">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Minimal Dots</div>
+                      <div class="template-description">A contemporary design with dot-prefixed section labels and a tag-based skills display for a modern digital aesthetic.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_11')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_11') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 12 - Simple Gray -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_12_preview.jpg') }}" alt="Template 12" class="template-img">
+                      <button class="save-btn" data-template-id="template_12">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Simple Gray</div>
+                      <div class="template-description">A clean-cut template with subtle gray section headers and left-bordered content areas providing elegant structure.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_12')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_12') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 13 -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_13_preview.jpg') }}" alt="Template 13" class="template-img">
+                      <button class="save-btn" data-template-id="template_13">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Simple Minimal</div>
+                      <div class="template-description">An uncluttered design with balanced spacing and straightforward information presentation for maximum readability.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_13')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_13') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Template 24 - Minimalist Elegant -->
+          <div class="col-md-6 col-lg-4 template-item" data-category="minimal">
+              <div class="template-card">
+                  <div class="position-relative">
+                      <img src="{{ url_for('static', filename='images/template_24_preview.jpg') }}" alt="Template 24" class="template-img">
+                      <button class="save-btn" data-template-id="template_24">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="template-body">
+                      <div class="template-title">Minimalist Elegant</div>
+                      <div class="template-description">A graceful template with subtle decorative corners and centered typography that conveys sophistication through simplicity.</div>
+                      <button class="btn-preview" onclick="previewTemplate('template_24')">Preview</button>
+                      <a href="{{ url_for('select_template', template_id='template_24') }}" class="btn-select">Select</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <div class="button-container">
+          <a href="/dashboard" class="back-btn dashboard-btn">
+            <span class="btn-icon">←</span>
+            <span>Back to Dashboard</span>
+          </a>
+          <a href="/info_gathering" class="back-btn edit-btn">
+            <span class="btn-icon">✎</span>
+            <span>Edit Profile</span>
+          </a>
+      </div>
+  </div>
+  
+  <!-- Preview Modal -->
+  <div id="previewModal" class="modal">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+          <iframe id="previewFrame" class="modal-iframe" src="/placeholder.svg"></iframe>
+      </div>
+  </div>
+  
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Chatbot HTML Structure -->
+    <button id="chatbot-toggler">
+        <span class="material-symbols-rounded">mode_comment</span>
+        <span class="material-symbols-rounded">close</span>
+    </button>
+    <div class="chatbot-popup">
+        <!-- Chatbot Header -->
+        <div class="chat-header">
+        <div class="header-info">
+            <svg class="chatbot-logo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+            <path
+                d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"
+            />
+            </svg>
+            <h2 class="logo-text">Resume Helper</h2>
+        </div>
+        <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
+        </div>
+        <!-- Chatbot Body -->
+        <div class="chat-body">
+        <div class="message bot-message">
+            <svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+            <path
+                d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"
+            />
+            </svg>
+            <div class="message-text">Hello! I'm your resume assistant. How can I help you today?</div>
+        </div>
+        </div>
+        <!-- Chatbot Footer -->
+        <div class="chat-footer">
+        <form action="#" class="chat-form">
+            <textarea placeholder="Ask me about resumes..." class="message-input" required></textarea>
+            <div class="chat-controls">
+            <div class="file-upload-wrapper">
+                <input type="file" accept="image/*" id="file-input" hidden />
+                <img src="#" />
+                <button type="button" id="file-upload" class="material-symbols-rounded">attach_file</button>
+                <button type="button" id="file-cancel" class="material-symbols-rounded">close</button>
+            </div>
+            <button type="submit" id="send-message" class="material-symbols-rounded">arrow_upward</button>
+            </div>
+        </form>
+       </div>
+      </div>
+
+        <!-- Chatbot CSS -->
+    <link rel="stylesheet" href="../static/css/chatbot.css" />
+    <!-- Chatbot JS -->
+    <script src="../static/js/chatbot.js"></script>
+<!-- Google Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <!-- javascript file -->
+  <script src="../static/js/templates.js"></script>
+  <script>
+    // Template filtering functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const templateItems = document.querySelectorAll('.template-item');
+      
+      // Add click event to filter buttons
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Get filter value
+          const filterValue = this.getAttribute('data-filter');
+          
+          // Show/hide templates based on filter
+          templateItems.forEach(item => {
+            if (filterValue === 'all') {
+              item.style.display = 'block';
+            } else {
+              if (item.getAttribute('data-category') === filterValue) {
+                item.style.display = 'block';
+              } else {
+                item.style.display = 'none';
+              }
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
